@@ -227,7 +227,7 @@ installClickHandlerLast = (event) ->
 
 cachedPageForUrl = (url) ->
   for k,v of pageCache
-    return v if v.url is url
+    return v if v?.url is url
 
 handleClick = (event) ->
   unless event.defaultPrevented
@@ -238,7 +238,6 @@ handleClick = (event) ->
       else
         visit link.href unless pageChangePrevented()
       event.preventDefault()
-
 
 extractLink = (event) ->
   link = event.target
