@@ -225,11 +225,18 @@ installClickHandlerLast = (event) ->
     document.removeEventListener 'click', handleClick, false
     document.addEventListener 'click', handleClick, false
 
+cachedPageForUrl = (url) ->
+  for k,v of pageCache
+    return v if v.url is url
+
 handleClick = (event) ->
   unless event.defaultPrevented
     link = extractLink event
     if link.nodeName is 'A' and !ignoreClick(event, link)
-      visit link.href unless pageChangePrevented()
+      if link.hasAttribute('data-restore-position') and (cachedPage = cachedPageForUrl(link.href))
+        fetchHistory cachedPage
+      else
+        visit link.href unless pageChangePrevented()
       event.preventDefault()
 
 
